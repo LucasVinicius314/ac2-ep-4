@@ -2,8 +2,9 @@ namespace Ac2Ep4
 {
   public static class Program
   {
-    static string fileInPath = "assets/main.ula";
-    static string fileOutPath = "assets/main.hex";
+    static string fileInPath = "assets/testeula.ula";
+    static string fileOutPath = "assets/testeula.hex";
+    static string csvntOutPath = "assets/testeula.csvnt";
 
     static Dictionary<string, string> instructionDict = new Dictionary<string, string>
     {
@@ -118,6 +119,20 @@ namespace Ac2Ep4
       }))
       {
         instructions.ForEach((inst) => stream.WriteLine(inst));
+
+        stream.Dispose();
+      }
+
+      using (var stream = new StreamWriter(csvntOutPath, new FileStreamOptions
+      {
+        Mode = FileMode.Create,
+        Access = FileAccess.ReadWrite,
+        Share = FileShare.None,
+      }))
+      {
+        var joined = String.Join(" ", instructions.ToArray());
+
+        stream.WriteLine(joined);
 
         stream.Dispose();
       }
